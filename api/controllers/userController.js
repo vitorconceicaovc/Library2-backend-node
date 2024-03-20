@@ -67,3 +67,27 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: "Erro interno do servidor." });
   }
 };
+
+// Função para vereficar token
+exports.verifyToken = async(req, res) => {
+  try {
+    const token = req.header('Authorization').replace('Bearer ', '');
+
+    if (!token) {
+      return res.status(401).json({ message: 'Token not found' });
+    }
+
+    // Verifica o token
+    jwt.verify(token, 'suaChaveSecreta', (error, decoded) => {
+      if (error) {
+        return res.status(401).json({ message: 'Invalid token' });
+      } else {
+        // Token é válido
+        return res.status(200).json({ message: 'Token is valid', decoded });
+      }
+    });
+  } catch (error) {
+    console.error('Token verification error:', error.message);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}

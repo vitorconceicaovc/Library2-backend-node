@@ -1,20 +1,23 @@
 // middleware/authenticateToken.js
-const jwt = require("jsonwebtoken");
-// const config = require("../config/config");
+const jwt = require('jsonwebtoken');
 
-module.exports = (req, res, next) => {
-  const token = req.headers["authorization"];
+module.exports = function(req, res, next) {
+  // Pegue o token do cabeçalho da requisição
+  const token = req.header('Authorization');
 
+  // Se o token não estiver presente
   if (!token) {
-    return res.status(401).json({ message: "Token não fornecido." });
+    return res.status(401).json({ msg: 'No token, authorization denied' });
   }
 
-  jwt.verify(token, config.secretKey, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ message: "Token inválido." });
-    }
+  try {
+    // Verifique o token
+    const decoded = jwt.verify(token, 'suaChaveSecreta');
 
-    req.userId = decoded.id;
+    // Adicione o usuário do token à requisição
+    req.user = decoded.user;
     next();
-  });
+  } catch (err) {
+    res.status(401).json({ msg: 'Token is not valid' });
+  }
 };

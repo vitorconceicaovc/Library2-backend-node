@@ -20,6 +20,10 @@ router.get("/booksinstances", bookinstance_controller.bookinstance_list_api);
 // GET all authors
 router.get("/authors", author_controller.author_list_api);
 
+// POST verify token
+router.post("/users/verifyToken", userController.verifyToken)
+
+//Need to authenticateToken
 router.use(authenticateToken);
 
 // GET a specific book
