@@ -10,6 +10,10 @@ var usersRouter = require("./routes/users");
 const catalogRouter = require("./routes/catalog"); 
 const apiRouter = require("./api/routes/api");
 
+const authRoutes = require("./api/routes/authRoutes");
+const userRoutes = require("./api/routes/userRoutes");
+const authenticateToken = require("./api/middleware/authenticateToken");
+
 var app = express();
 
 // Set up mongoose connection
@@ -38,6 +42,10 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/catalog", catalogRouter); 
 app.use("/api", apiRouter);
+
+app.use("/auth", authRoutes);
+
+// app.use("/users", authenticateToken, userRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
