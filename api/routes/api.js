@@ -8,6 +8,8 @@ const authenticateToken = require("../middleware/authenticateToken");
 
 // POST register user
 router.post("/users/register", userController.registerUser);
+// POST register user
+router.post("/users/login", userController.loginUser);
 
 // GET all books
 router.get("/books", book_controller.book_list_api);
