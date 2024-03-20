@@ -59,7 +59,14 @@ exports.loginUser = async (req, res) => {
     }
 
     // Se as credenciais estiverem corretas, gera um token JWT
-    const token = jwt.sign({ userId: user._id, email: user.email }, 'suaChaveSecreta', { expiresIn: '1h' });
+    const tokenPayload = {
+      userId: user._id,
+      email: user.email,
+      name: user.name // Adicione o nome do usuário ao payload
+    };
+
+    // Se as credenciais estiverem corretas, gera um token JWT
+    const token = jwt.sign(tokenPayload, 'suaChaveSecreta', { expiresIn: '30s' });
 
     res.status(200).json({ message: "Login bem-sucedido.", token });
   } catch (error) {
